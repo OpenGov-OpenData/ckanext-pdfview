@@ -27,7 +27,7 @@ if (typeof PDFJS === 'undefined') {
 // Disable PDFJS Worker due to compatability issues associated w/ redirects & CORS
 // This impacts only Internet Explorer related browswers
 function pdfJSWorkerCompatabilityCheck() {
-    var ua = window.navigator.userAgent;
+    var ua = (typeof navigator !== 'undefined' && navigator.userAgent) || '';
     var msie = ua.indexOf('MSIE ');
     var trident = ua.indexOf('Trident/');
     var edge = ua.indexOf('Edge/');
