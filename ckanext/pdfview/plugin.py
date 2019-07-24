@@ -44,6 +44,8 @@ class PdfView(p.SingletonPlugin):
         format_lower = resource.get('format', '').lower()
 
         proxy_enabled = p.plugin_loaded('resource_proxy')
+        if 'url' not in data_dict['resource']:
+            return False
         same_domain = datapreview.on_same_domain(data_dict)
 
         if format_lower in self.PDF:
