@@ -28,6 +28,8 @@ class PDFView(p.SingletonPlugin):
                 }
 
     def can_view(self, data_dict):
+        if 'url' not in data_dict['resource']:
+            return False
         return (data_dict['resource'].get('format', '').lower() == 'pdf')
 
     def view_template(self, context, data_dict):
