@@ -1,7 +1,10 @@
 {% extends 'dataviewer/base.html' %}
 
+{% set ckan_29_or_higher = h.ckan_version().split('.')[1] | int >= 9 %}
+{% set type = 'asset' if ckan_29_or_higher else 'resource' %}
+
 {% block styles %}
-  <link rel="resource" type="application/l10n" href="{{ h.urls_for_resource('ckanext-pdfview/vendor/pdfjs/web/locale/locale.properties.js')[-1] }}"/>
+  <link rel="resource" type="application/l10n" href="/vendor/pdfjs/web/locale/locale.properties.js"/>
 {% endblock %}
 
 {% block page %}
@@ -303,13 +306,17 @@
   <script>
     var resource_url = "{{ h.view_resource_url(resource_view, resource, package) }}";
     var lang = "{{ h.lang() }}";
-    var pdfjs_workerSrc = "{{ h.urls_for_resource('ckanext-pdfview/vendor/pdfjs/build/pdf.worker.js')[-1] }}";
+    var pdfjs_workerSrc = "/vendor/pdfjs/build/pdf.worker.js";
     // should user open new window/tab using Current View PDF.js control
     var body=document.getElementsByTagName('body')[0];
     if (window.top==window.self) { 
        body.style.height = '100%';
     }
   </script>
-  {% resource 'ckanext-pdfview/vendor/pdfjs/build/pdf.js' %}
-  {% resource 'ckanext-pdfview/main' %}
+  {% if ckan_29_or_higher %}
+    {% snippet 'ckanext_pdfview/snippets/pdfview_' ~ type ~ '.html', name='ckanext-pdfview/main-js' %}
+    {% snippet 'ckanext_pdfview/snippets/pdfview_' ~ type ~ '.html', name='ckanext-pdfview/main-css' %}
+  {% else %}
+    {% snippet 'ckanext_pdfview/snippets/pdfview_' ~ type ~ '.html', name='ckanext-pdfview/main' %}
+  {% endif %}
 {% endblock %}
