@@ -25,7 +25,7 @@ class PdfView(p.SingletonPlugin):
     def info(self):
         return {'name': 'pdf_view',
                 'title': 'PDF',
-                'icon': 'file-text',
+                'icon': 'file-pdf-o',
                 'default_title': 'PDF',
                 }
 
